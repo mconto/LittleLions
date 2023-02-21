@@ -36,5 +36,8 @@ public class Nino implements Serializable {
     @Column(name="apellido_resp")
     private String apellido_resp;
 
+    @Column(name="ubicacion_nino")
+    private String ubicacion;
+
  }
 

@@ -51,6 +51,7 @@ public class NinoService implements NinoRepoI {
                 ninoNuevo.setEdad(nino.getEdad());
                 ninoNuevo.setNombre_resp(nino.getNombre_resp());
                 ninoNuevo.setApellido_resp(nino.getApellido_resp());
+                ninoNuevo.setUbicacion(ninoNuevo.getUbicacion());
                 ninoRepositoryI.save(ninoNuevo);
                 return true;
             }else{
