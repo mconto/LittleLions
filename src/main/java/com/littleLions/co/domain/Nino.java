@@ -31,13 +31,15 @@ public class Nino implements Serializable {
     private int edad;
 
     @Column(name="nombre_resp")
-    private String nombre_resp;
+    private String nombreResp;
 
     @Column(name="apellido_resp")
-    private String apellido_resp;
+    private String apellidoResp;
 
     @Column(name="ubicacion_nino")
     private String ubicacion;
 
+    @Column(name="horas_requeridas")
+    private int horasRequeridas;
  }
 

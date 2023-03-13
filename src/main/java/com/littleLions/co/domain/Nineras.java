@@ -48,5 +48,8 @@ public class Nineras implements Serializable {
     @Column(name="asignada")
     private boolean asignada;
 
+    @Column(name="horas_disponibles")
+    private int horasDisponibles;
+
 }
 

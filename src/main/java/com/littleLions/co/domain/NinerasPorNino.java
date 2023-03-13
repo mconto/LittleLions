@@ -19,6 +19,10 @@ public class NinerasPorNino implements Serializable {
     @Column(name = "id")
     private long id;
 
+    @OneToMany
+    @JoinColumn(name="id_ninera", referencedColumnName = "id")
+    private Nineras idNinera;
+
     @Column(name="nombre_ninera")
     private String nombreNinera;
 

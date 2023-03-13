@@ -1,9 +1,6 @@
 package com.littleLions.co.service;
 
-import com.littleLions.co.domain.Nineras;
 import com.littleLions.co.domain.Nino;
-import com.littleLions.co.repository.NinerasRepoI;
-import com.littleLions.co.repository.NinerasRepositoryI;
 import com.littleLions.co.repository.NinoRepoI;
 import com.littleLions.co.repository.NinoRepositoryI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,21 +40,17 @@ public class NinoService implements NinoRepoI {
     @Override
     public boolean update(Nino nino) {
         try {
-            Optional<Nino> ninoBuscado = ninoRepositoryI.findById(nino.getId());
-            Nino ninoNuevo = new Nino();
-            if (ninoBuscado.isPresent()) {
-                ninoNuevo.setNombre(nino.getNombre());
-                ninoNuevo.setApellido(nino.getApellido());
-                ninoNuevo.setEdad(nino.getEdad());
-                ninoNuevo.setNombre_resp(nino.getNombre_resp());
-                ninoNuevo.setApellido_resp(nino.getApellido_resp());
-                ninoNuevo.setUbicacion(ninoNuevo.getUbicacion());
-                ninoRepositoryI.save(ninoNuevo);
-                return true;
-            }else{
-                return false;
-            }
-
+            ninoRepositoryI.findById(nino.getId())
+                    .map(ninoActualizado -> {
+                        ninoActualizado.setNombre(nino.getNombre());
+                        ninoActualizado.setApellido(nino.getApellido());
+                        ninoActualizado.setEdad(nino.getEdad());
+                        ninoActualizado.setNombreResp(nino.getNombreResp());
+                        ninoActualizado.setApellidoResp(nino.getApellidoResp());
+                        ninoActualizado.setUbicacion(nino.getUbicacion());
+                        return ninoRepositoryI.save(ninoActualizado);
+                    }).get();
+            return true;
         } catch (Exception e) {
             return false;
         }
@@ -66,9 +59,9 @@ public class NinoService implements NinoRepoI {
     @Override
     public List<Nino> findByNombre(String nombre) {
         Optional<List<Nino>> ninos = ninoRepositoryI.findByNombre(nombre);
-        if (ninos.isEmpty()){
+        if (ninos.isEmpty()) {
             return new ArrayList<Nino>();
-        }else{
+        } else {
             return ninos.get();
         }
     }
@@ -78,7 +71,7 @@ public class NinoService implements NinoRepoI {
         try {
             ninoRepositoryI.deleteById(id);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -86,9 +79,9 @@ public class NinoService implements NinoRepoI {
     @Override
     public List<Nino> findByUbicacion(String ubicacion) {
         Optional<List<Nino>> ninoLocalizacion = ninoRepositoryI.findByUbicacion(ubicacion);
-        if (ninoLocalizacion.isEmpty()){
+        if (ninoLocalizacion.isEmpty()) {
             return new ArrayList<>();
-        }else{
+        } else {
             return ninoLocalizacion.get();
         }
     }

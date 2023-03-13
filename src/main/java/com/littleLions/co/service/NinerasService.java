@@ -1,7 +1,6 @@
 package com.littleLions.co.service;
 
 import com.littleLions.co.domain.Nineras;
-import com.littleLions.co.domain.dtos.Precios;
 import com.littleLions.co.repository.NinerasRepoI;
 import com.littleLions.co.repository.NinerasRepositoryI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,22 +41,24 @@ public class NinerasService implements NinerasRepoI {
     public boolean update(Nineras ninera) {
         try {
             Optional<Nineras> nineras = ninerasRepositoryI.findById(ninera.getId());
-            Nineras nineraNueva = new Nineras();
-            if (nineras.isPresent()) {
-                nineraNueva.setNombre(ninera.getNombre());
-                nineraNueva.setApellido(ninera.getApellido());
-                nineraNueva.setEdad(ninera.getEdad());
-                nineraNueva.setUsuario(ninera.getUsuario());
-                nineraNueva.setCorreo(ninera.getCorreo());
-                nineraNueva.setFoto(ninera.getFoto());
-                nineraNueva.setBilingue(ninera.isBilingue());
-                nineraNueva.setNinoAsignado(ninera.getNinoAsignado());
-                nineraNueva.setAsignada(ninera.isAsignada());
-                ninerasRepositoryI.save(nineraNueva);
-                return true;
-            }else{
-                return false;
-            }
+
+            ninerasRepositoryI.findById(ninera.getId())
+                    .map(nineraActualizada ->
+                    {
+                        nineraActualizada.setNombre(ninera.getNombre());
+                        nineraActualizada.setApellido(ninera.getApellido());
+                        nineraActualizada.setEdad(ninera.getEdad());
+                        nineraActualizada.setUsuario(ninera.getUsuario());
+                        nineraActualizada.setCorreo(ninera.getCorreo());
+                        nineraActualizada.setFoto(ninera.getFoto());
+                        nineraActualizada.setBilingue(ninera.isBilingue());
+                        nineraActualizada.setNinoAsignado(ninera.getNinoAsignado());
+                        nineraActualizada.setAsignada(ninera.isAsignada());
+                        return ninerasRepositoryI.save(nineraActualizada);
+
+                    }).get();
+
+            return true;
 
         } catch (Exception e) {
             return false;
@@ -67,9 +68,9 @@ public class NinerasService implements NinerasRepoI {
     @Override
     public List<Nineras> findByNombre(String nombre) {
         Optional<List<Nineras>> nineras = ninerasRepositoryI.findByNombre(nombre);
-        if (nineras.isEmpty()){
+        if (nineras.isEmpty()) {
             return new ArrayList<Nineras>();
-        }else{
+        } else {
             return nineras.get();
         }
     }
@@ -77,9 +78,9 @@ public class NinerasService implements NinerasRepoI {
     @Override
     public List<Nineras> findByBilingue(boolean bilingue) {
         Optional<List<Nineras>> nineras = ninerasRepositoryI.findByBilingue(bilingue);
-        if (nineras.isEmpty()){
+        if (nineras.isEmpty()) {
             return new ArrayList<Nineras>();
-        }else{
+        } else {
             return nineras.get();
         }
     }
@@ -89,7 +90,7 @@ public class NinerasService implements NinerasRepoI {
         try {
             ninerasRepositoryI.deleteById(id);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -97,9 +98,9 @@ public class NinerasService implements NinerasRepoI {
     @Override
     public List<Nineras> findByBilingueAndAsignada(boolean bilingue, boolean asignada) {
         Optional<List<Nineras>> nineraAsignadaBilingue = ninerasRepositoryI.findByBilingueAndAsignada(bilingue, asignada);
-        if (nineraAsignadaBilingue.isEmpty()){
+        if (nineraAsignadaBilingue.isEmpty()) {
             return new ArrayList<>();
-        }else{
+        } else {
             return nineraAsignadaBilingue.get();
         }
     }
